@@ -1,2 +1,4 @@
+^renv$
+^renv\.lock$
 ^data\.library\.Rproj$
 ^\.Rproj\.user$
