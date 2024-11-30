@@ -15,9 +15,12 @@
 remotes::install_github("KyleHaynes/data.library")
 # or
 devtools::install_github("KyleHaynes/data.library")
+# and
+install.packages("data.table")
 
-# Load package
+# Load required packages
 library(data.library)
+library(data.table)
 
 # Output mtcars.
 output(data.table(mtcars), "./mtcars")
@@ -25,6 +28,16 @@ output(data.table(mtcars), "./mtcars")
 # Input mtcars.
 input("./mtcars")
 
+# Input a subset of variables.
+input("./mtcars", vars_regex = "c|w")
+# ℹ Importing the following variables: "carb", "cyl", "qsec", and "wt".
+# ! Not importing the following variables: "am", "disp", "drat", "gear", "hp", "mpg", and "vs".
+# ℹ Imported `carb`` in 0 minutes.
+# ℹ Imported `cyl`` in 0 minutes.
+# ℹ Imported `qsec`` in 0 minutes.
+# ℹ Imported `wt`` in 0 minutes.
+# ℹ Folder last modified: 2024-12-01 05:43:10.138605.
+# ℹ Overall time taken: 0 minutes.
 ```
 
 ### Why not `feather`?

@@ -73,7 +73,7 @@ input <- function(path = "c:/temp/gnap", vars_regex = NULL, vars_vec = NULL, ver
     }
 
     if(verbose) {
-        cli::cli_alert_info("Folder last modifed: {.emph {file.info(path)$mtime}}.")
+        cli::cli_alert_info("Folder last modified: {.emph {file.info(path)$mtime}}.")
         cli::cli_alert_info("Overall time taken: {.emph {round(difftime(Sys.time(), o_time_start, units = 'mins'), 2)}} minutes.")
     }
 
