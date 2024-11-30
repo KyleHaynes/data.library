@@ -93,8 +93,12 @@ input <- function(path = getOption("data.library.path"), vars_regex = NULL, vars
         # Read *.rds files
         set(d, i = NULL, j = paths[i]$var_name, value = readRDS(paths[i]$file_paths))
         # And if `verbose`, print output.
-        if(verbose) { 
-            cli::cli_alert_info("Imported `{.emph {paths[i]$var_name}}`` in {.emph {round(difftime(Sys.time(), time_start, units = 'mins'), 2)}} minutes.")
+        if(verbose) {
+            if(exists("spec") && !is.null(short <- spec$metadata$variables[[paths$var_name[i]]]$short_description)){
+                cli::cli_alert_info("Imported `{.emph {paths[i]$var_name}}`` in {.emph {round(difftime(Sys.time(), time_start, units = 'mins'), 2)}} minutes.\n    - {short}")
+            } else {
+                cli::cli_alert_info("Imported `{.emph {paths[i]$var_name}}`` in {.emph {round(difftime(Sys.time(), time_start, units = 'mins'), 2)}} minutes.")
+            }
             flush.console()
         }
     }

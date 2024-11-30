@@ -4,16 +4,13 @@
 \alias{create_shiny_metadata}
 \title{Create metadata in Shiny}
 \usage{
-create_shiny_metadata(obj = letters, var_criteria)
+create_shiny_metadata(
+  d = iris,
+  var_criteria = list(short_description = "", foobar = Sys.Date())
+)
 }
 \arguments{
-\item{path}{Folder path of where the data will be output.}
-
-\item{vars_regex}{Regex pattern to match variable names to input.}
-
-\item{vars_vec}{A vector of of variable names to input.}
-
-\item{verbose}{Logical argument to be verbose.}
+\item{tba}{update_me.}
 }
 \description{
 Create metadata in Shiny.

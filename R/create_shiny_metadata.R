@@ -3,34 +3,29 @@
 #' @description
 #' Create metadata in Shiny.
 
-#' @param path Folder path of where the data will be output.
-#' 
-#' @param vars_regex Regex pattern to match variable names to input.
-#' 
-#' @param vars_vec A vector of of variable names to input.
-#' 
-#' @param verbose Logical argument to be verbose.
+#' @param tba update_me.
 
 #' @import data.table shiny jsonlite bslib
 
-create_shiny_metadata <- function(obj = letters, var_criteria) {
+create_shiny_metadata <- function(
+    d = iris, 
+    var_criteria = list(
+        short_description = "",
+        foobar = Sys.Date()
+        )) {
 
     var_criteria <- list(
-                    identifier = "",
-                    other_context = "",
+                    short_description = "",
                     foobar = Sys.Date()
                 )
 
     # Get the name of the passed object
-    object_to_change <- deparse(substitute(obj)) 
-
-    # Get the object from a given environment
-    val <- get(object_to_change, envir = .GlobalEnv) 
+    object_to_change <- names(d)
     var_criteria <<- var_criteria 
 
     # Save the object as a reactive value
-    values <- reactiveValues(x = val)                                   
-    values <- reactiveValues(var_criteria = var_criteria)                                   
+    # values <- reactiveValues(x = val)
+    values <- reactiveValues(var_criteria = var_criteria)
     # Enable thematic
     # thematic::thematic_shiny(font = "auto")
 
@@ -40,7 +35,7 @@ create_shiny_metadata <- function(obj = letters, var_criteria) {
         titlePanel("Edit Metadata Information"),
         theme = bs_theme(
             bootswatch = "darkly",
-            base_font = font_google("Inter"),
+            # base_font = font_google("Inter"),
             navbar_bg = "#25443B"
         ),
         # !!!cards,
@@ -83,17 +78,17 @@ create_shiny_metadata <- function(obj = letters, var_criteria) {
                 name = "Health Data",
                 description = "This dataset contains clinical and administrative health data, including demographic information."
             ),
-            variables = list(val)  # To store metadata for user-defined variables
+            variables = list(object_to_change)  # To store metadata for user-defined variables
         )
         
         # Observe the add new variable button
         observeEvent(input$add_variable, {
             new_var_name <- input$new_var_name
-            new_var_name <- val
+            new_var_name <- object_to_change
             
             # Check if the new variable name is not empty and doesn't already exist
             if (T) {
-                for(i in val) {
+                for(i in object_to_change) {
                     # Add new variable metadata structure to the list
                     metadata$variables[[i]] <- var_criteria
                 }

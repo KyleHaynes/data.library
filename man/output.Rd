@@ -4,7 +4,13 @@
 \alias{output}
 \title{Output data}
 \usage{
-output(d, path = getOption("data.library.path"), verbose = TRUE, ...)
+output(
+  d,
+  path = getOption("data.library.path"),
+  metadata = NA,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{d}{data.table, data.frame or tibble to export.}

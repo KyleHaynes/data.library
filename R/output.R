@@ -12,7 +12,7 @@
 #' @import data.table
 
 #' @export
-output <- function(d, path = getOption("data.library.path"), verbose = TRUE, ...) {
+output <- function(d, path = getOption("data.library.path"), metadata = NA, verbose = TRUE, ...) {
 
     if(is.null(path)){
         stop("No `path`` defined. Either define `path` or set `options(\"data.library.path\" = \"./path/to/data\")`")
@@ -71,7 +71,8 @@ output <- function(d, path = getOption("data.library.path"), verbose = TRUE, ...
         creation_date = Sys.Date(),
         creation_path = normalizePath(path),
         object_class = data_class,
-        row.names = if(data_class == "data.frame"){ row_names } else { FALSE }
+        row.names = if(data_class == "data.frame"){ row_names } else { FALSE },
+        metadata = if(!is.na(metadata[1])){ metadata } else { FALSE }
     )
     saveRDS(info, paste0(sys_path, "/data.library.spec.rds"))
 
