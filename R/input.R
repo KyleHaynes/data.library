@@ -41,22 +41,24 @@ input <- function(path = "c:/temp/gnap", vars_regex = NULL, vars_vec = NULL, ver
         paths[, import := TRUE]
     }
 
+    # Error if no vars
+    if(nrow(paths[(import)]) == 0){
+        stop("No variables detected.")
+    }
 
+    # If verbose, communicate what vars are/are not getting inputted.
     if(verbose){
         cli::cli_alert_info("Importing the following variables: {.val {paths[(import)]$var_name}}.", wrap = TRUE)
         cli::cli_alert_warning("Not importing the following variables: {.val {paths[(!import)]$var_name}}.", wrap = FALSE)
     }
 
+    # Subset to just vars getting inputted.
     paths <- paths[(import)]
-
-    # Error if no vars
-    if(nrow(paths) == 0){
-        stop("No variables detected.")
-    }
 
     # Overall time recording.
     o_time_start <- Sys.time()
 
+    # Create empty data.table to bind to.
     d <- data.table()
 
     # Output individual RDS objects.
