@@ -4,8 +4,8 @@
 
 ### Simple R library to input and output datasets.
 
-* Data (`data.table`) is outputted (`output()`) as individual RDS objects.
-* Data is inputted (`input()`) as a combined `data.table` object.
+* Data (`data.table`, `tibble`, `data.frame`) is outputted (`output()`) as individual RDS objects.
+* Data is inputted (`input()`) as a combined (`data.table`, `tibble`, `data.frame`) object.
 * Ability to specify a subset of variables to input.
 
 ### Usage
@@ -15,21 +15,18 @@
 remotes::install_github("KyleHaynes/data.library")
 # or
 devtools::install_github("KyleHaynes/data.library")
-# and
-install.packages("data.table")
 
 # Load required packages
 library(data.library)
-library(data.table)
 
 # Output mtcars.
-output(data.table(mtcars), "./mtcars")
+output(mtcars, "./mtcars")
 
 # Input mtcars.
-input("./mtcars")
+data <- input("./mtcars")
 
 # Input a subset of variables.
-input("./mtcars", vars_regex = "c|w")
+data <- input("./mtcars", vars_regex = "c|w")
 # ℹ Importing the following variables: "carb", "cyl", "qsec", and "wt".
 # ! Not importing the following variables: "am", "disp", "drat", "gear", "hp", "mpg", and "vs".
 # ℹ Imported `carb`` in 0 minutes.
@@ -38,6 +35,19 @@ input("./mtcars", vars_regex = "c|w")
 # ℹ Imported `wt`` in 0 minutes.
 # ℹ Folder last modified: 2024-12-01 05:43:10.138605.
 # ℹ Overall time taken: 0 minutes.
+
+# You can also define global options.
+options("data.library.path" = "./iris")
+
+# Output iris.
+output(iris)
+
+# Input iris.
+i <- input()
+
+# Check equality.
+all.equal(iris, i)
+# [1] TRUE
 ```
 
 ### Why not `feather`?
@@ -72,7 +82,6 @@ system.time({
 ### To Do
 
 - Lots
-- Allow non-data.tables
 - Streamlined creation of metadata
 - Better doco
 - Vignettes

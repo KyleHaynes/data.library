@@ -4,7 +4,7 @@
 \alias{output}
 \title{Output data}
 \usage{
-output(d, path, verbose = TRUE, ...)
+output(d, path = getOption("data.library.path"), verbose = TRUE, ...)
 }
 \arguments{
 \item{d}{data.table to export.}

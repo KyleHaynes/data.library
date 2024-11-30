@@ -1,11 +1,3 @@
-# Load necessary libraries
-library(shiny)
-library(jsonlite)
-# Load necessary libraries
-library(shiny)
-library(jsonlite)
-library(bslib)
-
 #' Create metadata in Shiny
 #'
 #' @description

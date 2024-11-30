@@ -16,3 +16,5 @@ Imports:
     shiny,
     jsonlite,
     bslib
+Suggests:
+    devtools

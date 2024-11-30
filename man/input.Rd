@@ -5,7 +5,7 @@
 \title{Input data}
 \usage{
 input(
-  path = "c:/temp/gnap",
+  path = getOption("data.library.path"),
   vars_regex = NULL,
   vars_vec = NULL,
   verbose = TRUE

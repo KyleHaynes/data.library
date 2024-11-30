@@ -12,10 +12,33 @@
 #' @import data.table
 
 #' @export
-output <- function(d, path, verbose = TRUE, ...) {
+output <- function(d, path = getOption("data.library.path"), verbose = TRUE, ...) {
+
+    if(is.null(path)){
+        stop("No `path`` defined. Either define `path` or set `options(\"data.library.path\" = \"./path/to/data\")`")
+    }
+
+    # Determine data type.
+    data_class <- fcase(
+        tibble::is_tibble(d), "tibble",
+        is.data.table(d), "data.table",
+        is.data.frame(d), "data.frame"
+    )
+    
+    # Save row.names if a data.frame
+    if(data_class == "data.frame"){ 
+        row_names <- row.names(d)
+    } else {
+        row_names <- FALSE
+    }
+    
+    # Coerce to data.table
+    d <- data.table(d)
 
     # Normalise the path.
     path <- normalizePath(path, mustWork = FALSE)
+    # Define a system path.
+    sys_path <- normalizePath(paste0(path, "/.data.library"), mustWork = FALSE)
 
     # Create the directory if it doesn't exist.
     if(!dir.exists(path)) {
@@ -25,10 +48,28 @@ output <- function(d, path, verbose = TRUE, ...) {
         }
     }
 
+    if(!dir.exists(sys_path)) {
+        test <- dir.create(sys_path, showWarnings = FALSE, recursive = TRUE)
+        if(!test){
+            stop("Creation of sys_path `", sys_path, "` failed.")
+        }
+    }
+
     # Check var names on `d` are unique.
     if(any(duplicated(names(d)))) {
         stop("Duplicated variable names on `d`: ", paste(names(d)[duplicated(names(d))], collapse = ", "))
     }
+
+    # Write the data.library spec file.
+    info <- list(
+        var_order = names(d),
+        creation_date_time = Sys.time(),
+        creation_date = Sys.Date(),
+        creation_path = normalizePath(path),
+        object_class = data_class,
+        row.names = if(data_class == "data.frame"){ row_names } else { FALSE }
+    )
+    saveRDS(info, paste0(sys_path, "/data.library.spec.rds"))
 
     # Overall time recording.
     o_time_start <- Sys.time()

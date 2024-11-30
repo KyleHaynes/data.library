@@ -14,23 +14,48 @@
 #' @import data.table
 
 #' @export
-input <- function(path = "c:/temp/gnap", vars_regex = NULL, vars_vec = NULL, verbose = TRUE){
+input <- function(path = getOption("data.library.path"), vars_regex = NULL, vars_vec = NULL, verbose = TRUE){
+
+    if(is.null(path)){
+        stop("No `path`` defined. Either define `path` or set `options(\"data.library.path\" = \"./path/to/data\")`")
+    }
 
     if(is.null(vars_regex) && is.null(vars_vec) && verbose){
-        message("`vars_regex` and `vars_vec` are NULL, importing all variables.")
+        cli::cli_alert_info("`vars_regex` and `vars_vec` are NULL, importing all variables.")
     }
     
     # Normalise the path.
     path <- normalizePath(path, mustWork = TRUE)
 
+    # Define the spec path.
+    sys_path <- normalizePath(paste0(path, "/.data.library/data.library.spec.rds"), mustWork = FALSE)
+
+    if(file.exists(sys_path)){
+        spec <- readRDS(sys_path)
+        spec_exists <- TRUE
+    } else {
+        cli::cli_alert_warning("No specification file detected. Variable order will likely not match original dataset. Data will be returned as a `data.table`.", wrap = TRUE)
+        spec_exists <- FALSE
+    }
+
     # Get path of all RDS objects.
     # TODO: improve with manifest.
-    paths <- data.table(
-        file_paths = normalizePath(list.files(path = path, full.names = TRUE, pattern = "rds_.*\\.rds$", ignore.case = TRUE))
-    )
-    
-    # Derive the variable name
-    paths[, var_name := gsub(".*rds_|\\.rds", "", file_paths, ignore.case = TRUE, perl = TRUE)]
+    if(spec_exists){
+        paths <- data.table(
+            file_paths = normalizePath(list.files(path = path, full.names = TRUE, pattern = "rds_.*\\.rds$", ignore.case = TRUE))
+        )
+        # Derive the variable name
+        paths[, var_name := gsub(".*rds_|\\.rds", "", file_paths, ignore.case = TRUE, perl = TRUE)]
+        # Subset to just spec vars.
+        paths <- paths[var_name %in% spec$var_order]
+    } else {
+        paths <- data.table(
+            file_paths = normalizePath(list.files(path = path, full.names = TRUE, pattern = "rds_.*\\.rds$", ignore.case = TRUE))
+        )
+        # Derive the variable name
+        paths[, var_name := gsub(".*rds_|\\.rds", "", file_paths, ignore.case = TRUE, perl = TRUE)]
+    }
+
 
     # If regex is not NULL, subset to regex vars
     if(!is.null(vars_regex)){
@@ -71,6 +96,16 @@ input <- function(path = "c:/temp/gnap", vars_regex = NULL, vars_vec = NULL, ver
         if(verbose) { 
             cli::cli_alert_info("Imported `{.emph {paths[i]$var_name}}`` in {.emph {round(difftime(Sys.time(), time_start, units = 'mins'), 2)}} minutes.")
             flush.console()
+        }
+    }
+
+    if(spec_exists){
+        setcolorder(d, spec$var_order[spec$var_order %in% names(d)])
+        if(spec$object_class == "data.frame"){
+            d <- data.frame(d)
+            row.names(d) <- spec$row.names
+        } else if (spec$object_class == "tibble"){
+            d <- tibble::tibble(d)
         }
     }
 
