@@ -68,3 +68,11 @@ system.time({
 }, gcFirst = F)
 # 90 seconds
 ```
+
+### To Do
+
+- Lots
+- Allow non-data.tables
+- Streamlined creation of metadata
+- Better doco
+- Vignettes
