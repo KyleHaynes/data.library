@@ -34,12 +34,11 @@ input <- function(path = "c:/temp/gnap", vars_regex = NULL, vars_vec = NULL, ver
 
     # If regex is not NULL, subset to regex vars
     if(!is.null(vars_regex)){
-        paths <- paths[, import := fifelse(grepl(vars_regex, var_name, perl = TRUE), TRUE, FALSE)]
-    }
-
-    # If regex is not NULL, subset to regex vars
-    if(!is.null(vars_vec)){
-        paths <- paths[, import := fifelse(var_name %in% vars_vec, TRUE, FALSE)]
+        paths[, import := fifelse(grepl(vars_regex, var_name, perl = TRUE), TRUE, FALSE)]
+    } else if(!is.null(vars_vec)){
+        paths[, import := fifelse(var_name %in% vars_vec, TRUE, FALSE)]
+    } else {
+        paths[, import := TRUE]
     }
 
 

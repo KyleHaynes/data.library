@@ -1,12 +1,31 @@
 # data.library
 
-**!!!IN DEVELOPMENT!!!**
+**!!! IN DEVELOPMENT !!!**
 
 ### Simple R library to input and output datasets.
 
 * Data (`data.table`) is outputted (`output()`) as individual RDS objects 
 * Data is inputted (`input()`) as a combined `data.table` object
 * Ability to specify a subset of variables to input.
+
+### Usage
+
+```R
+# Install package.
+remotes::install_github("KyleHaynes/data.library")
+# or
+devtools::install_github("KyleHaynes/data.library")
+
+# Load package
+library(data.library)
+
+# Output mtcars.
+output(data.table(mtcars), "./mtcars")
+
+# Input mtcars.
+input("./mtcars")
+
+```
 
 ### Why not `feather`?
 
