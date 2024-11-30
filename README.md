@@ -4,8 +4,8 @@
 
 ### Simple R library to input and output datasets.
 
-* Data (`data.table`) is outputted (`output()`) as individual RDS objects 
-* Data is inputted (`input()`) as a combined `data.table` object
+* Data (`data.table`) is outputted (`output()`) as individual RDS objects.
+* Data is inputted (`input()`) as a combined `data.table` object.
 * Ability to specify a subset of variables to input.
 
 ### Usage
@@ -43,6 +43,7 @@ input("./mtcars", vars_regex = "c|w")
 ### Why not `feather`?
 
 * Network benchmarks (~100MB/s) indicate reading RDS is faster.
+* `feather` can't output complex data structures (e.g. lists).
 
 (basic, basic, basic) benchmarks (GNAF-Core, 15.4m rows, 27 vars):
 
