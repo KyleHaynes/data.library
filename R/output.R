@@ -25,6 +25,10 @@ output <- function(d, path = getOption("data.library.path"), verbose = TRUE, ...
         is.data.frame(d), "data.frame"
     )
     
+    if(data_class %in% NA){
+        stop("`d` must be a tibble, data.table or data.frame.")
+    }
+
     # Save row.names if a data.frame
     if(data_class == "data.frame"){ 
         row_names <- row.names(d)
