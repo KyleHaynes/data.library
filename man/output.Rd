@@ -7,7 +7,7 @@
 output(d, path = getOption("data.library.path"), verbose = TRUE, ...)
 }
 \arguments{
-\item{d}{data.table to export.}
+\item{d}{data.table, data.frame or tibble to export.}
 
 \item{path}{Folder path of where the data will be output.}
 

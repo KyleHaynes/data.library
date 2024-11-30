@@ -3,7 +3,7 @@
 #' @description
 #' Output data to *.RDS objects.
 
-#' @param d data.table to export.
+#' @param d data.table, data.frame or tibble to export.
 #' 
 #' @param path Folder path of where the data will be output.
 #' 
