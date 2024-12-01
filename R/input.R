@@ -74,7 +74,7 @@ input <- function(path = getOption("data.library.path"), vars_regex = NULL, vars
     # If verbose, communicate what vars are/are not getting inputted.
     if(verbose){
         cli::cli_alert_info("Importing the following variables: {.val {paths[(import)]$var_name}}.", wrap = TRUE)
-        cli::cli_alert_warning("Not importing the following variables: {.val {paths[(!import)]$var_name}}.", wrap = FALSE)
+        if(nrow(paths[(!import)]) >= 1) cli::cli_alert_warning("Not importing the following variables: {.val {paths[(!import)]$var_name}}.", wrap = FALSE)
     }
 
     # Subset to just vars getting inputted.
@@ -94,7 +94,11 @@ input <- function(path = getOption("data.library.path"), vars_regex = NULL, vars
         set(d, i = NULL, j = paths[i]$var_name, value = readRDS(paths[i]$file_paths))
         # And if `verbose`, print output.
         if(verbose) {
-            if(exists("spec") && !is.null(short <- spec$metadata$variables[[paths$var_name[i]]]$short_description)){
+            if(
+                exists("spec") && 
+                spec$metadata[1] != FALSE && 
+                !is.null(short <- spec$metadata$variables[[paths$var_name[i]]]$short_description)
+            ){
                 cli::cli_alert_info("Imported `{.emph {paths[i]$var_name}}`` in {.emph {round(difftime(Sys.time(), time_start, units = 'mins'), 2)}} minutes.\n    - {short}")
             } else {
                 cli::cli_alert_info("Imported `{.emph {paths[i]$var_name}}`` in {.emph {round(difftime(Sys.time(), time_start, units = 'mins'), 2)}} minutes.")
