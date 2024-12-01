@@ -92,10 +92,11 @@ output <- function(d, path = getOption("data.library.path"), metadata = NA, verb
         time_end <- Sys.time()
         # And if `verbose`, print output.
         if(verbose) { 
-            message(paste0("# `", i, "` outputted (time: ", 
+            msg <- paste0("{.val ", i, "} outputted (time: {.emph ", 
                 round(difftime(time_end, time_start, units = 'mins'), 2),
-                 " minutes)."
-            ))
+                 " minutes})."
+            )
+            cli::cli_alert_info(msg, wrap = TRUE)
             flush.console()
         }
     }
