@@ -16,7 +16,7 @@ input(
 
 \item{vars_regex}{Regex pattern to match variable names to input.}
 
-\item{vars_vec}{A vector of of variable names to input.}
+\item{vars_vec}{A vector of variable names to input.}
 
 \item{verbose}{Logical argument to be verbose.}
 }

@@ -7,7 +7,7 @@
 #' 
 #' @param vars_regex Regex pattern to match variable names to input.
 #' 
-#' @param vars_vec A vector of of variable names to input.
+#' @param vars_vec A vector of variable names to input.
 #' 
 #' @param verbose Logical argument to be verbose.
 
