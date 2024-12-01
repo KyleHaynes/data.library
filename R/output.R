@@ -102,9 +102,10 @@ output <- function(d, path = getOption("data.library.path"), metadata = NA, verb
     }
 
     if(verbose) {
-        message(paste0("\n# Overall time taken: ", 
+        msg <- paste0("Overall time taken: {.emph ", 
             round(difftime(Sys.time(), o_time_start, units = 'mins'), 2),
-            " minutes."
-        ))
+            " minutes}."
+        )
+        cli::cli_alert_info(msg, wrap = TRUE)
     }
 }
