@@ -96,7 +96,7 @@ input <- function(path = getOption("data.library.path"), vars_regex = NULL, vars
         if(verbose) {
             if(
                 exists("spec") && 
-                spec$metadata[1] != FALSE && 
+                unlist(spec$metadata[1])[1] != FALSE && 
                 !is.null(short <- spec$metadata$variables[[paths$var_name[i]]]$short_description)
             ){
                 cli::cli_alert_info("Imported `{.emph {paths[i]$var_name}}`` in {.emph {round(difftime(Sys.time(), time_start, units = 'mins'), 2)}} minutes.\n    - {short}")
